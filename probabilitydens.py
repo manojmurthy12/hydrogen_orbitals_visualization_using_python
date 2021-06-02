@@ -3,6 +3,8 @@ from sympy import *
 import math
 from math import pi, sqrt ,pow
 
+
+
 pdf=[]
 i=0
 l=int(input("\n enter the value of azimutal quantum number:"))
