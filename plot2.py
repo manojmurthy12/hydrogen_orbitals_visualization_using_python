@@ -17,6 +17,10 @@ orbital =''
 x_eye = -1.25
 y_eye = 2
 z_eye = 0.5
+a=0.529*pow(10,-10)
+
+n=3
+step=2*n**2*a/5
 
 import sympy
 from sympy import *
@@ -25,22 +29,23 @@ from math import pi, sqrt ,pow
 
 def probability_density(n,l,m,x,y,z,a):
     theta = Symbol('theta')
-    fn1 = sin(theta) ** (2 * l)
+    fn1 = sin(theta)**(2 * l)
     der1 = diff(fn1, theta, m + l)
     r1 = sqrt(x ** 2 + y ** 2 + z ** 2)
-    var1 = der1.evalf(subs={theta: math.acos(x / r1)})
-    Y = var1 * pow(-1, (m + l)) * pow(math.sin(x / r1), m) / ((2 ** l) * (math.factorial(l))) * sqrt(
+    thetacons= z / r1
+    var1 = der1.evalf(subs={theta: math.acos(thetacons)})
+    Y = var1 * pow(-1, (m + l)) * pow(math.sin(thetacons), m) / ((2 ** l) * (math.factorial(l))) * sqrt(
         (2 * l + 1) / (4 * pi) * ((math.factorial(l + m)) / math.factorial(l - m)))
     r = Symbol('r')
-    fn2 = exp(-r) * (r ** (n + l))
+    fn2 = exp(-r) * (r**(n + l))
     der2 = diff(fn2, r, n + l)
     r2 = sqrt(x ** 2 + y ** 2 + z ** 2)
     fn3 = der2 * exp(r)
     der3 = diff(fn3, r, (2 * l + 1))
     var3 = der3.evalf(subs={r: r2})
     L = (2 / (n * a) * pow(-1, (2 * l + 1)) * var3)
-    pd = math.exp(-2 * r1 / (n * a)) * pow((2 * r1 / (n * a)), (2 * l)) * pow(L, 2) * pow(Y, 2) * (
-                pow((2 / (n * a)), 3) * (math.factorial(n - l - 1) / (2 * n * (pow(math.factorial(n + l), 3)))))
+    pd =pow(10,-17)*4/ 3*pi*pow(step,3)*math.exp(-2 * r1 / (n * a)) * pow((2 * r1 / (n * a)), (2 * l)) * pow(L, 2) * pow(Y, 2)*(pow((2/(n*a)), 3)*(math.factorial(n-l-1)/(2*n*(pow(math.factorial(n+l), 3)))))
+    i=1
     if not math.isnan(pd):
         return pd
     else:
@@ -66,7 +71,7 @@ def probdensity2(r, orbital, x, y):
 
 def randomsphere2(x, y, z, k):   #this function is used to generate random points with the centre being the point where
     #probability density k is found
-    sphere = Sphere(x, y, z, 10)
+    sphere = Sphere(x, y, z, step)
     #print(k)
     if int(math.floor(k)) > 0:  #math.floor is done to make the number an integer
         random_sphere_points = sphere.create_random_points(int(math.floor(k)))
@@ -81,13 +86,13 @@ def randomplot2():
     #orbital=input()      #the orbital of user choice has taken as input
     #print(orbital)
 
-    for x in np.arange(-40.0,40.0,10.0):  #np.arange is used when step size is a floating point
-        for y in np.arange(-40.0,40.0,10.0):
-            for z in np.arange(-40.0,40.0,10.0):
+    for x in np.arange(-2*n**2*a, 2*n**2*a, step):  #np.arange is used when step size is a floating point
+        for y in np.arange(-2*n**2*a, 2*n**2*a, step):
+            for z in np.arange(-2*n**2*a, 2*n**2*a, step):
 
                 #r=math.sqrt((x**2+y**2+z**2)) #radial distance is calculated
 
-                k =100000*probability_density(7,4,0,x,y,z,40/49)#probability density psi is calculated in a seperate function
+                k=probability_density(5,2,0,x,y,z,a)#probability density psi is calculated in a seperate function
                 print(k)
 
                 randomsphere2(x, y, z, k) #random points are generated around the point (x,y,z) to plot
