@@ -1,4 +1,5 @@
 import numpy as np
+import random
 import math
 from random_geometry_points.sphere import Sphere
 import pandas as pd  # (version 1.0.0)
@@ -19,19 +20,24 @@ y_eye = 2
 z_eye = 0.5
 a=0.529*pow(10,-10)
 
-n=3
-step=2*n**2*a/5
+#n=5
+#step=1
+n_orbital=4
+l_azimuthal=2
+m_magnetic=1
 
 import sympy
 from sympy import *
 import math
 from math import pi, sqrt ,pow
 
-def probability_density(n,l,m,x,y,z,a):
+def probability_density(n,l,m,x,y,z,a,step):
+    #print(pi)
     theta = Symbol('theta')
     fn1 = sin(theta)**(2 * l)
     der1 = diff(fn1, theta, m + l)
     r1 = sqrt(x ** 2 + y ** 2 + z ** 2)
+    #pi=math.pi
     thetacons= z / r1
     var1 = der1.evalf(subs={theta: math.acos(thetacons)})
     Y = var1 * pow(-1, (m + l)) * pow(math.sin(thetacons), m) / ((2 ** l) * (math.factorial(l))) * sqrt(
@@ -44,7 +50,7 @@ def probability_density(n,l,m,x,y,z,a):
     der3 = diff(fn3, r, (2 * l + 1))
     var3 = der3.evalf(subs={r: r2})
     L = (2 / (n * a) * pow(-1, (2 * l + 1)) * var3)
-    pd =pow(10,-17)*4/ 3*pi*pow(step,3)*math.exp(-2 * r1 / (n * a)) * pow((2 * r1 / (n * a)), (2 * l)) * pow(L, 2) * pow(Y, 2)*(pow((2/(n*a)), 3)*(math.factorial(n-l-1)/(2*n*(pow(math.factorial(n+l), 3)))))
+    pd =pow(10,-17)*pow(step,3)*math.exp(-2 * r1 / (n * a)) * pow((2 * r1 / (n * a)), (2 * l)) * pow(L, 2) * pow(Y, 2)*(pow((2/(n*a)), 3)*(math.factorial(n-l-1)/(2*n*(pow(math.factorial(n+l), 3)))))
     i=1
     if not math.isnan(pd):
         return pd
@@ -52,24 +58,8 @@ def probability_density(n,l,m,x,y,z,a):
         return 0
 
 
-def probdensity2(r, orbital, x, y):
-    density=0
-    if orbital == '1s':
-        density= (math.exp(-2 * r))*5000
-    elif orbital == '2s':
-        density= (math.exp(-r)*(pow(-r+2,2)))*500
-    elif orbital == '3p':
-        density= (math.exp(-2*r/3)*((-r**2+4*r)**2))*(x**2/(x**2+y**2))*10
-    elif orbital == '4p':
-        density= ((math.exp(-r/2)*(r**2)*((15*(r**2)-300*r+1200)**2))*(x**2/(x**2+y**2)))/5000
 
-    if not math.isnan(density):
-        return density
-    else :
-        return 0
-
-
-def randomsphere2(x, y, z, k):   #this function is used to generate random points with the centre being the point where
+def randomsphere2(x, y, z, k,step):   #this function is used to generate random points with the centre being the point where
     #probability density k is found
     sphere = Sphere(x, y, z, step)
     #print(k)
@@ -80,22 +70,41 @@ def randomsphere2(x, y, z, k):   #this function is used to generate random point
             by.append(random_sphere_points[i][1])
             cy.append(random_sphere_points[i][2])
 
+def random_points_square(x,y,z,k,step):
+    if int(math.floor(k)) > 0:
+        for i in range((math.floor(k))):
+            ay.append((x - step / 2) + (random.random() * (step)))
+            by.append((y - step / 2) + (random.random()  * (step)))
+            cy.append((z - step / 2) + (random.random()  * (step)))
+def random_points_sphere(x,y,z,k,step):
+    radius=math.sqrt(x**2 + y**2 + z**2)
+    if int(math.floor(k)) > 0:
+        for i in range((math.floor(k))):
+            ay.append((x - step) + (random.random() * (step)))
+            by.append((y - step) + (random.random()  * (step)))
+            cy.append((z - step) + (random.random()  * (step)))
+
 
 def randomplot2():
     #print('enter the orbit')
     #orbital=input()      #the orbital of user choice has taken as input
-    #print(orbital)
 
-    for x in np.arange(-2*n**2*a, 2*n**2*a, step):  #np.arange is used when step size is a floating point
-        for y in np.arange(-2*n**2*a, 2*n**2*a, step):
-            for z in np.arange(-2*n**2*a, 2*n**2*a, step):
+    step = (2*(n_orbital ** 2) * a) / 5
+    for x in np.arange(-2*(n_orbital**2)*a, 2*(n_orbital**2)*a, step):  #np.arange is used when step size is a floating point
+        for y in np.arange(-2*(n_orbital**2)*a, 2*(n_orbital**2)*a, step):
+            for z in np.arange(-2*(n_orbital**2)*a, 2*(n_orbital**2)*a, step):
 
                 #r=math.sqrt((x**2+y**2+z**2)) #radial distance is calculated
 
-                k=probability_density(5,2,0,x,y,z,a)#probability density psi is calculated in a seperate function
+                k=probability_density(n_orbital,l_azimuthal,m_magnetic,x,y,z,a,step)#probability density psi is calculated in a seperate function
                 print(k)
 
-                randomsphere2(x, y, z, k) #random points are generated around the point (x,y,z) to plot
+                if k<200:
+                    random_points_square(x,y,z,k,step)
+                else:
+                    random_points_square(x,y,z,200,step)
+
+            #random points are generated around the point (x,y,z) to plot
 
 
     #nucleus = Sphere(0, 0, 0, 0.00001*(max(ay)+max(by)+max(cy))/3) #radius of nucleus is found here(it applies only for 1s orbital
@@ -107,7 +116,7 @@ def randomplot2():
 
 
     fig=px.scatter_3d(x=ay,y=by,z=cy,title=orbital+' orbital',height=700)
-    fig.update_traces(marker_size=2)
+    fig.update_traces(marker_size=1)
 
     # fig.update_layout(scene_camera_eye=dict(x=x_eye, y=y_eye, z=z_eye),
     #                   updatemenus=[dict(type='buttons',
