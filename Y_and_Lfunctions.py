@@ -13,9 +13,9 @@ def Y_function(n,l,m,x,y,z,a):
         eps = 1
     theta = Symbol('theta')
 
-    fn1 = (sin(theta)) ** (2 * l) * (-1) ** l
+    fn1 = (sin(theta)) ** (2 * l) * (-1) **2* l
     der_fn = diff(fn1, theta, (abs(m) + l))
-    der_t = diff(cos(theta), theta, (abs(m) + l))
+    der_t = diff(cos(theta), theta)**(abs(m) + l)
     der = der_fn/der_t
     radius = sqrt(x ** 2 + y ** 2 + z ** 2)
 
@@ -33,13 +33,13 @@ def L_function(n,l,m,x,y,z,a):
 
     fn = exp((-2 * r / n * a)) * ((2 * r / n * a) ** (n + l))
     der_fn = diff(fn, r, n + l)
-    der_par = diff((2 * r / n * a), r, n + l)
+    der_par = diff((2 * r / n * a), r)**(n + l)
     der = der_fn/der_par
     radius = sqrt(x ** 2 + y ** 2 + z ** 2)
 
     fn3 = der * exp((2 * r / n * a))
     der_fnf = diff(fn3, r, (2 * l + 1))
-    der_par2 = diff((2 * r / n * a), r, (2 * l + 1))
+    der_par2 = diff((2 * r / n * a), r)**(2 * l + 1)
     der2 = der_fnf/der_par2
     value = der2.evalf(subs={r: radius})
     L = pow(-1, (2 * l + 1)) * value
