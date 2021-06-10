@@ -50,7 +50,7 @@ def probability_density(n,l,m,x,y,z,a,step):
     der3 = diff(fn3, r, (2 * l + 1))
     var3 = der3.evalf(subs={r: r2})
     L = (2 / (n * a) * pow(-1, (2 * l + 1)) * var3)
-    pd =pow(10,-17)*pow(step,3)*math.exp(-2 * r1 / (n * a)) * pow((2 * r1 / (n * a)), (2 * l)) * pow(L, 2) * pow(Y, 2)*(pow((2/(n*a)), 3)*(math.factorial(n-l-1)/(2*n*(pow(math.factorial(n+l), 3)))))
+    pd =pow(10,-15)*pow(step,3)*math.exp(-2 * r1 / (n * a)) * pow((2 * r1 / (n * a)), (2 * l)) * pow(L, 2) * pow(Y, 2)*(pow((2/(n*a)), 3)*(math.factorial(n-l-1)/(2*n*(pow(math.factorial(n+l), 3)))))
     i=1
     if not math.isnan(pd):
         return pd
@@ -100,9 +100,9 @@ def randomplot2():
                 print(k)
 
                 if k<200:
-                    random_points_square(x,y,z,k,step)
+                    random_points_sphere(x,y,z,k,step)
                 else:
-                    random_points_square(x,y,z,200,step)
+                    random_points_sphere(x,y,z,20,step)
 
             #random points are generated around the point (x,y,z) to plot
 
