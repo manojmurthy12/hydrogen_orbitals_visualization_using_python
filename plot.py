@@ -137,8 +137,12 @@ def randomplot():
    # plt.savefig('all2.png',dpi=5000)
     #plt.show() #this command will help to show the plot
 
-    fig=px.scatter_3d(x=ay,y=by,z=cy,title=orbital+' orbital',height=700)
-    fig.update_traces(marker_size=1)
+    fig=px.scatter_3d(x=ay,y=by,z=cy,title=orbital+' orbital',height=1000,template='plotly_dark',)
+    fig.update_traces(marker_size=1,)
+    fig.update_traces(marker_color='teal')
+    # fig.update_xaxes(showgrid=False,zeroline=False)
+    # fig.update_yaxes(showgrid=False,zeroline=False)
+    #fig.update_zaxes(showgrid=False)
 
     fig.write_html("index.html")
     print('done')
