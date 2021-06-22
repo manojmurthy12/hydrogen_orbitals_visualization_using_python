@@ -156,4 +156,18 @@ def randomplot2():
     fig.write_html("index.html")
     print('done')
 
+def randomplot3():
+    #print('enter the orbit')
+    #orbital=input()      #the orbital of user choice has taken as input
+
+    step = (2*(n_orbital ** 2) * a) / 5
+    for x in np.arange(-2*(n_orbital**2)*a, 2*(n_orbital**2)*a, step):  #np.arange is used when step size is a floating point
+        for y in np.arange(-2*(n_orbital**2)*a, 2*(n_orbital**2)*a, step):
+            for z in np.arange(-2*(n_orbital**2)*a, 2*(n_orbital**2)*a, step):
+
+                #r=math.sqrt((x**2+y**2+z**2)) #radial distance is calculated
+
+                k=probability_density(n_orbital,l_azimuthal,m_magnetic,x,y,z,a,step)#probability density psi is calculated in a seperate function
+                return k
+
 

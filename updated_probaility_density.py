@@ -1,4 +1,3 @@
-
 import numpy as np
 import random
 import math
@@ -129,12 +128,17 @@ def random_points_square(x,y,z,k,step):
             by.append((y - step / 2) + (random.random()  * (step)))
             cy.append((z - step / 2) + (random.random()  * (step)))
 def random_points_sphere(x,y,z,k,step):
-    radius=math.sqrt(x**2 + y**2 + z**2)
-    if int(math.floor(k)) > 0:
-        for i in range((math.floor(k))):
-            ay.append((x - step) + (random.random() * (step)))
-            by.append((y - step) + (random.random()  * (step)))
-            cy.append((z - step) + (random.random()  * (step)))
+    for i in range(math.floor(k)):
+        theta = random.random()*2*math.pi
+        v = random.random()
+        phi = math.acos((2*v)-1)
+        r = math.pow(random.random(),1/3)*step
+        xp = r*math.sin(phi)*math.cos(theta)+x
+        yp = r*math.sin(phi)*math.sin(theta)+y
+        zp = r*math.cos(phi)+z
+        ay.append(xp)
+        by.append(yp)
+        cy.append(zp)
 
 
 def randomplot2():
