@@ -19,9 +19,9 @@ def probdensity(r,orbital,x,y,z):
     if orbital == '1s':
         density= (math.exp(-2 * r))*5000
     elif orbital == '2s':
-        density= (math.exp(-r)*(pow(-r+2,2)))*500
+        density= (math.exp(-r)*(pow(-r+2,2)))*1000
     elif orbital == '3p':
-        density= (math.exp(-2*r/3)*((-r**2+4*r)**2))*(x**2/(x**2+y**2))*10
+        density= (math.exp(-2*r/3)*((-r**2+4*r)**2))*(x**2/(x**2+y**2))*50
     elif orbital == '4p':
         density= 5*((math.exp(-r/2)*(r**2)*((15*(r**2)-300*r+1200)**2))*(x**2/(x**2+y**2)))/5000
     elif orbital == '4s':
