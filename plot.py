@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import math
 import random
 import plotly.express as px
-from random_geometry_points.sphere import Sphere
+
 
 ay=[]
 by=[]
@@ -42,18 +42,6 @@ def probdensity(r,orbital,x,y,z):
     else :
         return 0
 
-
-def randomsphere(x,y,z,k):   #this function is used to generate random points with the centre being the point where
-    #probability density k is found
-    sphere = Sphere(x, y, z, 2)
-    #print(k)
-    if int(math.floor(k)) > 0:  #math.floor is done to make the number an integer
-        random_sphere_points = sphere.create_random_points(int(math.floor(k)))
-        for i in range(len(random_sphere_points)):
-            ay.append(random_sphere_points[i][0])
-            by.append(random_sphere_points[i][1])
-            cy.append(random_sphere_points[i][2])
-
 def random_points_sphere(x,y,z,k,step):
     for i in range(math.floor(k)):
         theta = random.random() * 2 * math.pi
@@ -67,12 +55,7 @@ def random_points_sphere(x,y,z,k,step):
         by.append(yp)
         cy.append(zp)
 
-def random_points_square(x,y,z,k,step):
-    if int(math.floor(k)) > 0:
-        for i in range((math.floor(k))):
-            ay.append((x - step / 2) + (random.random() * (step)))
-            by.append((y - step / 2) + (random.random()  * (step)))
-            cy.append((z - step / 2) + (random.random()  * (step)))
+
 def sphere(k):
  ay = []
  by = []
@@ -105,8 +88,6 @@ def randomplot():
     plt.rcParams['figure.dpi']=150
     plt.rcParams["scatter.edgecolors"]='none'
 
-    #fig = plt.figure()
-    #ax = fig.add_subplot(111,projection='3d')
 
     print('enter the orbit')
     orbital=input()      #the orbital of user choice has taken as input
@@ -124,25 +105,11 @@ def randomplot():
                 random_points_sphere(x, y, z, k,4)
 
 
-
-    nucleus = Sphere(0, 0, 0, 0.00001*(max(ay)+max(by)+max(cy))/3) #radius of nucleus is found here(it applies only for 1s orbital
-    nucleus_points = nucleus.create_random_points(1000)
-    for t in range(len(nucleus_points)):
-        nx.append(nucleus_points[t][0])
-        ny.append(nucleus_points[t][1])
-        nz.append(nucleus_points[t][2])
-
-    #ax.scatter(nx, ny, nz, s=10, c='green', marker='.') #nucleus position is plotted
-    #ax.scatter(ay,by,cy,s=0.3,c='blue',marker='.') #the electron positions are plotted
-   # plt.savefig('all2.png',dpi=5000)
-    #plt.show() #this command will help to show the plot
-
-    fig=px.scatter_3d(x=ay,y=by,z=cy,title=orbital+' orbital',height=700,width=700,template='plotly_dark',)
+    fig=px.scatter_3d(x=ay,y=by,z=cy,title=orbital+' orbital',height=1366,width=768,template='plotly_dark',)
     fig.update_traces(marker_size=1,)
     fig.update_traces(marker_color='teal')
-    # fig.update_xaxes(showgrid=False,zeroline=False)
-    # fig.update_yaxes(showgrid=False,zeroline=False)
-    #fig.update_zaxes(showgrid=False)
+    fig.show()
 
-    fig.write_html("index.html")
+    fig.write_html("htmlfiles/"+orbital+".html")
+
     print('done')
