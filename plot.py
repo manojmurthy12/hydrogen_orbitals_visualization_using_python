@@ -105,10 +105,10 @@ def randomplot():
                 random_points_sphere(x, y, z, k,4)
 
 
-    fig=px.scatter_3d(x=ay,y=by,z=cy,title=orbital+' orbital',height=320,width=320,template='plotly_dark',)
+    fig=px.scatter_3d(x=ay,y=by,z=cy,title=orbital+' orbital',height=960,width=960,template='plotly_dark',)
     fig.update_traces(marker_size=1,)
     fig.update_traces(marker_color='teal')
-    fig.show()
+    #fig.show()
 
     fig.write_html("index.html")
 
