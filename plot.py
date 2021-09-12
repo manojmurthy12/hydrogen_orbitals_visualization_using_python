@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import random
-import plotly.express as px
+import plotly.express as px  #plotting module used
 
 
 ay=[]
@@ -13,10 +13,10 @@ ny=[]
 nz=[]
 orbital =''
 
-def probdensity(r,orbital,x,y,z):
+def probdensity(r,orbital,x,y,z):   #function to calculate probability density
     density=0
 
-    if orbital == '1s':
+    if orbital == '1s':             #orbitals from 1s to 4f are calculated reference book used is introduction to quantum mechanice by pearson
         density= (math.exp(-2 * r))*5000
     elif orbital == '2s':
         density= (math.exp(-r)*(pow(-r+2,2)))*1000
@@ -42,12 +42,12 @@ def probdensity(r,orbital,x,y,z):
     else :
         return 0
 
-def random_points_sphere(x,y,z,k,step):
+def random_points_sphere(x,y,z,k,step):   #A function to generate random points inside a sphere
     for i in range(math.floor(k)):
         theta = random.random() * 2 * math.pi
         v = random.random()
         phi = math.acos((2 * v) - 1)
-        r = math.pow(random.random(), 1 / 3) * step
+        r = math.pow(random.random(), 1 / 3) * step   //radius
         xp = r * math.sin(phi) * math.cos(theta) + x
         yp = r * math.sin(phi) * math.sin(theta) + y
         zp = r * math.cos(phi) + z
@@ -83,7 +83,7 @@ def sphere(k):
             by.append((y - 2) + (random.random()  * (step)))
             cy.append((z - 2) + (random.random()  * (step)))
 
-def randomplot():
+def randomplot():                        #main function used to plot the orbitals
     plt.rcParams['figure.figsize']=(6,4)
     plt.rcParams['figure.dpi']=150
     plt.rcParams["scatter.edgecolors"]='none'
@@ -110,6 +110,6 @@ def randomplot():
     fig.update_traces(marker_color='teal')
     #fig.show()
 
-    fig.write_html("index.html")
+    fig.write_html("index.html")                      # figure generted as html file
 
     print('done')
